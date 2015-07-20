@@ -3,7 +3,7 @@
   "description": "Provides integration for Tactician with Isolate",
   "keywords": ["isolate", "tactician", "command bus"],
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=5.5.0",
     "league/tactician": "^0.6.0",
     "isolate/isolate": "1.0.*@dev",
     "isolate/unit-of-work": "1.0.*@dev",
