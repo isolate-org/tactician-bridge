@@ -4,7 +4,7 @@
   "keywords": ["isolate", "tactician", "command bus"],
   "require": {
     "php": ">=5.5.0",
-    "league/tactician": "^0.6.0",
+    "league/tactician": "^0.6 || ^1.0",
     "isolate/isolate": "1.0.*@dev",
     "isolate/unit-of-work": "1.0.*@dev",
     "isolate/lazy-objects": "1.0.*@dev"
