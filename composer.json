@@ -10,7 +10,7 @@
     "isolate/lazy-objects": "1.0.*@dev"
   },
   "require-dev": {
-    "phpspec/phpspec": "^2.2"
+    "phpspec/phpspec": "^2.1"
   },
   "autoload": {
     "psr-0": {
