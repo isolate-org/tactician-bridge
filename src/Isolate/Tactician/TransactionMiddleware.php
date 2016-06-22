@@ -35,7 +35,12 @@ final class TransactionMiddleware implements Middleware
     public function execute($command, callable $next)
     {
         $context = $this->isolate->getContext($this->contextName);
-        $transaction = $context->hasOpenTransaction() ? $context->getTransaction() : $context->openTransaction();
+
+        if ($context->hasOpenTransaction()) {
+            return $next($command);
+        }
+
+        $transaction = $context->openTransaction();
 
         try {
             $returnValue = $next($command);
