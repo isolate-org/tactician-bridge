@@ -6,12 +6,24 @@ use Isolate\PersistenceContext;
 use Isolate\PersistenceContext\Name;
 use Isolate\PersistenceContext\Transaction;
 
-class SingleTransactionContextStub implements PersistenceContext
+final class SingleTransactionContextStub implements PersistenceContext
 {
     /**
      * @var Transaction
      */
     private $transaction;
+
+    /**
+     * @var bool
+     */
+    private $opened = false;
+
+    public static function createOpened(Transaction $transaction)
+    {
+        $instance = new self($transaction);
+        $instance->opened = true;
+        return $instance;
+    }
 
     /**
      * @param Transaction $transaction
@@ -20,7 +32,7 @@ class SingleTransactionContextStub implements PersistenceContext
     {
         $this->transaction = $transaction;
     }
-    
+
     /**
      * @return Name
      */
@@ -42,7 +54,7 @@ class SingleTransactionContextStub implements PersistenceContext
      */
     public function hasOpenTransaction()
     {
-        return true;
+        return $this->opened;
     }
 
     /**

@@ -18,12 +18,12 @@ class TransactionMiddlewareSpec extends ObjectBehavior
         $isolate = new Isolate($contextFactory->getWrappedObject());
         $this->beConstructedWith($isolate);
     }
-    
+
     function it_is_middleware()
     {
         $this->shouldImplement(Middleware::class);
     }
-    
+
     function it_opens_transaction_before_next_middleware_and_commit_after_it(Factory $contextFactory, PersistenceContext\Transaction $transaction)
     {
         $isolate = new Isolate($contextFactory->getWrappedObject());
@@ -35,7 +35,7 @@ class TransactionMiddlewareSpec extends ObjectBehavior
 
         $this->execute("command", function($command) { return true; })->shouldReturn(true);
     }
-    
+
     function it_opens_transaction_and_rollback_if_after_exception_from_next_middleware(Factory $contextFactory, PersistenceContext\Transaction $transaction)
     {
         $transaction->commit()->shouldNotBeCalled();
@@ -45,5 +45,14 @@ class TransactionMiddlewareSpec extends ObjectBehavior
 
         $this->shouldThrow(\Exception::class)
             ->during("execute", ["command", function($command) { throw new \Exception(); }]);
+    }
+
+    function it_not_opens_transaction_and_rollback_if_transaction_already_opened(Factory $contextFactory, PersistenceContext\Transaction $transaction)
+    {
+        $transaction->commit()->shouldNotBeCalled();
+        $context = SingleTransactionContextStub::createOpened($transaction->getWrappedObject());
+        $contextFactory->create(Argument::type(Name::class))->willReturn($context);
+
+        $this->execute("command", function($command) { return true; })->shouldReturn(true);
     }
 }
